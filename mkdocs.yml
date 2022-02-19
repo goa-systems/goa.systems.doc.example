@@ -1,0 +1,7 @@
+site_name: GOA Systems example documentation
+site_url: https://goa.systems/
+nav:
+    - Home: README.md
+theme:
+    name: 'readthedocs'
+    logo: 'logo.png'

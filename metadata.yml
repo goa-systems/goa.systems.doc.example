@@ -1,0 +1,18 @@
+---
+title: "GOA Systems example documentation"
+author: [Andreas Gottardi]
+subject: "Markdown"
+keywords: [Markdown, Example]
+subtitle: "A example documentation"
+lang: "en"
+titlepage: true,
+titlepage-rule-color: "360049"
+logo-width: 50mm
+geometry:
+- top=30mm
+- left=10mm
+- left=20mm
+- right=10mm
+- bottom=30mm
+- heightrounded
+...
