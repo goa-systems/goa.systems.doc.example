@@ -88,12 +88,12 @@ Download and install Python from the [distributions download page](https://www.p
 
 ![Python download](img/python_1.png)
 
-![Python download](img/python_2.png)
+![Installation start screen](img/python_2.png)
 
-![Python download](img/python_3.png)
+![Select features](img/python_3.png)
 
-![Python download](img/python_4.png)
+![Specify install location](img/python_4.png)
 
-![Python download](img/python_5.png)
+![Updating pip to the latest version](img/python_5.png)
 
 #### MkDocs
