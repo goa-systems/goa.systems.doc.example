@@ -23,7 +23,7 @@ echo "Directories created"
 cd "docs"
 pandoc "README.md" \
 	../metadata.yml \
-	--data-dir=/usr/local/share/pandoc
+	--data-dir=/usr/local/share/pandoc \
 	--metadata date=$(date +"%Y-%m-%d") \
 	--metadata titlepage-background="../background.pdf" \
 	--metadata logo=logo.png \
