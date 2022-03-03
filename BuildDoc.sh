@@ -2,9 +2,9 @@
 
 # Validate that tools are available in the global path ($env:PATH, %PATH%, ...)
 mkdocs --help> /dev/null 2>&1
-if [ "$0" -ne "0" ]; then echo "Can not find mkdocs."; exit; fi
+if [ "$?" -ne "0" ]; then echo "Can not find mkdocs."; exit; fi
 pandoc --help> /dev/null 2>&1
-if [ "$0" -ne "0" ]; then echo "Can not find pandoc."; exit; fi
+if [ "$?" -ne "0" ]; then echo "Can not find pandoc."; exit; fi
 
 if [ -d "out" ]
 then
@@ -15,8 +15,8 @@ fi
 
 # Create output directories
 echo "Creating directories"
-mkdir -p "out\pdf"
-mkdir -p "out\html"
+mkdir -p "out/pdf"
+mkdir -p "out/html"
 echo "Directories created"
 
 # Generate outputs
