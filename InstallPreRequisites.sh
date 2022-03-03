@@ -9,10 +9,10 @@ else
 	apt install -y pandoc mkdocs pandoc mkdocs pandoc mkdocs texlive-latex-recommended texlive-latex-extra librsvg2-bin texlive-fonts-extra
 	
 	# Only download and install the template if it does not already exist
-	if [ ! -f /root/.pandoc/templates/eisvogel.latex ]
+	if [ ! -f /usr/local/share/pandoc/templates/eisvogel.latex ]
 	then
 		wget -O /tmp/Eisvogel-2.0.0.tar.gz https://github.com/Wandmalfarbe/pandoc-latex-template/releases/download/v2.0.0/Eisvogel-2.0.0.tar.gz
-		mkdir ~/.pandoc/templates -p
-		tar -C ~/.pandoc/templates -f /tmp/Eisvogel-2.0.0.tar.gz -x
+		mkdir /usr/local/share/pandoc/templates -p
+		tar -C /usr/local/share/pandoc/templates -f /tmp/Eisvogel-2.0.0.tar.gz -x
 	fi
 fi
