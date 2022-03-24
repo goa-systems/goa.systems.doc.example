@@ -48,9 +48,9 @@ function Install-MiKTeX {
         $DownloadDir
     )
 
-    $MiKTeXVersion = "21.12"
+    $MiKTeXVersion = "22.3"
     $MiKTeXInstaller = "basic-miktex-$MiKTeXVersion-x64.exe"
-    $LocalRepoDir = "C:\ProgramData\MiKTeX"
+    $LocalRepoDir = "$env:ProgramData\MiKTeX"
     $MiKTeXInstallDir = "$env:LocalAppData\Programs\MiKTeX"
 
     if( -Not (Test-Path -Path "$LocalRepoDir")) {
@@ -60,18 +60,29 @@ function Install-MiKTeX {
     Start-BitsTransfer -Source "https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x64/$MiKTeXInstaller" -Destination "$DownloadDir\$MiKTeXInstaller"
 
     Start-Process -FilePath "$DownloadDir\$MiKTeXInstaller" -ArgumentList @(
-        "--private",
         "--package-set=complete",
         "--unattended",
         "--remote-package-repository=https://mirror.easyname.at/ctan/systems/win32/miktex/tm/packages/",
-        "--local-package-repository=C:\ProgramData\MiKTeX",
+        "--local-package-repository=$LocalRepoDir",
+        "--download"
+    ) -Wait
+
+    Start-Process -FilePath "$DownloadDir\$MiKTeXInstaller" -ArgumentList @(
+        "--package-set=complete",
+        "--auto-install=yes",
+        "--unattended",
+        "--local-package-repository=$LocalRepoDir",
+        "--install-from-local-repository"
         "--user-config=`"$env:AppData\MiKTeX`"",
         "--user-data=`"$env:LocalAppData\MiKTeX`"",
         "--user-install=`"$MiKTeXInstallDir`""
+        "--install"
     ) -Wait
 
     # Search for updates to prevent warning messages from pdflatex
     Start-Process -FilePath "$MiKTeXInstallDir\miktex\bin\x64\mpm.exe" -ArgumentList @("--find-updates") -Wait
+
+    Remove-Item -Recurse -Force -Path "$LocalRepoDir"
 }
 
 <#
