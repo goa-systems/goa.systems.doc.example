@@ -12,7 +12,7 @@ function Install-Python {
         $DownloadDir
     )
 
-    $PythonVersion = "3.10.2"
+    $PythonVersion = "3.10.5"
     $PythonInstaller = "python-$PythonVersion-amd64.exe"
     $PythonInstallDir = "$env:LocalAppData\Programs\Python\$PythonVersion"
     Start-BitsTransfer -Source "https://www.python.org/ftp/python/$PythonVersion/$PythonInstaller" -Destination "$DownloadDir\$PythonInstaller"
@@ -129,7 +129,7 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-Install-Python -DownloadDir "$DownloadDir"
+# Install-Python -DownloadDir "$DownloadDir"
 Install-MiKTeX -DownloadDir "$DownloadDir"
 Install-Pandoc -DownloadDir "$DownloadDir"
 Install-Template -DownloadDir "$DownloadDir"
