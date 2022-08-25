@@ -12,7 +12,7 @@ function Install-Python {
         $DownloadDir
     )
 
-    $PythonVersion = "3.10.5"
+    $PythonVersion = "3.10.6"
     $PythonInstaller = "python-$PythonVersion-amd64.exe"
     $PythonInstallDir = "$env:LocalAppData\Programs\Python\$PythonVersion"
     Start-BitsTransfer -Source "https://www.python.org/ftp/python/$PythonVersion/$PythonInstaller" -Destination "$DownloadDir\$PythonInstaller"
@@ -75,7 +75,7 @@ function Install-Pandoc {
         $DownloadDir
     )
     
-    $PandocVersion="2.17.1.1"
+    $PandocVersion="2.19.2"
     $PandocMsi="pandoc-$PandocVersion-windows-x86_64.msi"
     Start-BitsTransfer -Source "https://github.com/jgm/pandoc/releases/download/$PandocVersion/$PandocMsi" -Destination "$DownloadDir\$PandocMsi"
     Start-Process -FilePath "msiexec" -ArgumentList @("/i", "$DownloadDir\$PandocMsi", "/qn", "PPLICATIONFOLDER=`"$env:LocalAppData\Programs\Pandoc`"", "ADDLOCAL=MainProgram,Complete,Manual,Citation") -Wait
