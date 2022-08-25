@@ -1,3 +1,25 @@
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [string]
+    $PythonVersion = "3.10.6",
+
+    [Parameter()]
+    [string]
+    $MiktexVersion = "22.7",
+
+    [Parameter()]
+    [string]
+    $PanDocVersion = "2.19.2",
+
+    [Parameter()]
+    [string]
+    $EisVogelVersion = "2.0.0",
+
+    [Parameter(Mandatory = $false)]
+    [Switch]
+    $KeepArtifacts = $false
+)
 
 <#
 .Install-Python
@@ -9,13 +31,16 @@ function Install-Python {
     param (
         [Parameter()]
         [string]
-        $DownloadDir
+        $DownloadDir,
+
+        [Parameter()]
+        [string]
+        $Version = "3.10.6"
     )
 
-    $PythonVersion = "3.10.6"
-    $PythonInstaller = "python-$PythonVersion-amd64.exe"
-    $PythonInstallDir = "$env:LocalAppData\Programs\Python\$PythonVersion"
-    Start-BitsTransfer -Source "https://www.python.org/ftp/python/$PythonVersion/$PythonInstaller" -Destination "$DownloadDir\$PythonInstaller"
+    $PythonInstaller = "python-$Version-amd64.exe"
+    $PythonInstallDir = "$env:LocalAppData\Programs\Python\$Version"
+    Start-BitsTransfer -Source "https://www.python.org/ftp/python/$Version/$PythonInstaller" -Destination "$DownloadDir\$PythonInstaller"
 
     Start-Process -FilePath "$DownloadDir\$PythonInstaller" -ArgumentList @(
         "/passive",
@@ -25,12 +50,13 @@ function Install-Python {
         "Shortcuts=0",
         "Include_doc=0"
         "Include_dev=0",
+        "PrependPath=1",
         "Include_launcher=0",
         "Include_tcltk=0",
         "Include_test=0"
     ) -Wait
 
-    [System.Environment]::SetEnvironmentVariable("PYTHON_HOME","$PythonInstallDir",[System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable("PYTHON_HOME", "$PythonInstallDir", [System.EnvironmentVariableTarget]::User)
     Start-Process -FilePath "$PythonInstallDir\python.exe" -ArgumentList @("-m", "pip", "install", "--upgrade", "pip") -Wait
     Start-Process -FilePath "$PythonInstallDir\python.exe" -ArgumentList @("-m", "pip", "install", "mkdocs") -Wait
 }
@@ -45,11 +71,14 @@ function Install-MiKTeX {
     param (
         [Parameter()]
         [string]
-        $DownloadDir
+        $DownloadDir,
+
+        [Parameter()]
+        [string]
+        $Version = "22.7"
     )
 
-    $MiKTeXVersion = "22.7"
-    $MiKTeXInstaller = "basic-miktex-$MiKTeXVersion-x64.exe"
+    $MiKTeXInstaller = "basic-miktex-$Version-x64.exe"
     $MiKTeXInstallDir = "$env:LocalAppData\Programs\MiKTeX"
 
     Start-BitsTransfer -Source "https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x64/$MiKTeXInstaller" -Destination "$DownloadDir\$MiKTeXInstaller"
@@ -72,12 +101,15 @@ function Install-Pandoc {
     param (
         [Parameter()]
         [string]
-        $DownloadDir
+        $DownloadDir,
+
+        [Parameter()]
+        [string]
+        $Version = "2.19.2"
     )
     
-    $PandocVersion="2.19.2"
-    $PandocMsi="pandoc-$PandocVersion-windows-x86_64.msi"
-    Start-BitsTransfer -Source "https://github.com/jgm/pandoc/releases/download/$PandocVersion/$PandocMsi" -Destination "$DownloadDir\$PandocMsi"
+    $PandocMsi = "pandoc-$Version-windows-x86_64.msi"
+    Start-BitsTransfer -Source "https://github.com/jgm/pandoc/releases/download/$Version/$PandocMsi" -Destination "$DownloadDir\$PandocMsi"
     Start-Process -FilePath "msiexec" -ArgumentList @("/i", "$DownloadDir\$PandocMsi", "/qn", "PPLICATIONFOLDER=`"$env:LocalAppData\Programs\Pandoc`"", "ADDLOCAL=MainProgram,Complete,Manual,Citation") -Wait
 }
 
@@ -91,12 +123,15 @@ function Install-Template {
     param (
         [Parameter()]
         [string]
-        $DownloadDir
+        $DownloadDir,
+
+        [Parameter()]
+        [string]
+        $Version = "2.0.0"
     )
     
-    $EisvogelVersion="2.0.0"
-    $EisvogelZip="Eisvogel-$EisvogelVersion.zip"
-    Start-BitsTransfer -Source "https://github.com/Wandmalfarbe/pandoc-latex-template/releases/download/v$EisvogelVersion/$EisvogelZip" -Destination "$DownloadDir\$EisvogelZip"
+    $EisvogelZip = "Eisvogel-$Version.zip"
+    Start-BitsTransfer -Source "https://github.com/Wandmalfarbe/pandoc-latex-template/releases/download/v$Version/$EisvogelZip" -Destination "$DownloadDir\$EisvogelZip"
     Expand-Archive -Path "$DownloadDir\$EisvogelZip" -DestinationPath "$env:AppData\pandoc\templates\"
 
 }
@@ -106,9 +141,14 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-# Install-Python -DownloadDir "$DownloadDir"
-Install-MiKTeX -DownloadDir "$DownloadDir"
-Install-Pandoc -DownloadDir "$DownloadDir"
-Install-Template -DownloadDir "$DownloadDir"
+Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
+Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
+Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
+Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
 
-Remove-Item -Recurse -Force -Path "$DownloadDir"
+if ($KeepArtifacts -eq $false)
+{
+    Write-Host -Object "Deleting downloaded artifacts"
+    Remove-Item -Recurse -Force -Path "$DownloadDir"
+    Write-Host -Object "Downloaded artifacts deleted"
+}
