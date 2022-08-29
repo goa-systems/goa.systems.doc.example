@@ -6,7 +6,7 @@ then
 else
 
 	# Install prerequisites
-	apt install -y pandoc mkdocs pandoc mkdocs pandoc mkdocs texlive-latex-recommended texlive-latex-extra librsvg2-bin texlive-fonts-extra
+	apt install -y pandoc mkdocs texlive-latex-recommended texlive-latex-extra librsvg2-bin texlive-fonts-extra
 	
 	# Only download and install the template if it does not already exist
 	if [ ! -f /usr/local/share/pandoc/templates/eisvogel.latex ]
