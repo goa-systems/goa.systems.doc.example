@@ -2,7 +2,7 @@
 param (
     [Parameter()]
     [string]
-    $PythonVersion = "3.10.6",
+    $PythonVersion = "3.10.7",
 
     [Parameter()]
     [string]
