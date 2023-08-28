@@ -2,19 +2,19 @@
 param (
     [Parameter()]
     [string]
-    $PythonVersion = "3.10.7",
+    $PythonVersion = "3.11.5",
 
     [Parameter()]
     [string]
-    $MiktexVersion = "22.7",
+    $MiktexVersion = "23.4",
 
     [Parameter()]
     [string]
-    $PanDocVersion = "2.19.2",
+    $PanDocVersion = "3.1.6.2",
 
     [Parameter()]
     [string]
-    $EisVogelVersion = "2.0.0",
+    $EisVogelVersion = "2.4.0",
 
     [Parameter(Mandatory = $false)]
     [Switch]
@@ -141,9 +141,9 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-# Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
-# Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
-# Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
+Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
+Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
+Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
 Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
 
 if ($KeepArtifacts -eq $false)
