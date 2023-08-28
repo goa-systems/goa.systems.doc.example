@@ -85,7 +85,7 @@ function Install-MiKTeX {
 
     Start-Process -FilePath "$DownloadDir\$MiKTeXInstaller" -ArgumentList @("--install", "--unattended", "--user-install=`"$MiKTeXInstallDir`"") -Wait
     Start-Process -FilePath "$MiKTeXInstallDir\miktex\bin\x64\miktex.exe" -ArgumentList @("packages", "update") -Wait -NoNewWindow
-    $Packages = @("adjustbox", "auxhook", "bigintcalc", "bitset", "bookmark", "caption", "collectbox", "colortbl", "csquotes", "etexcmds", "fancyhdr", "float", "footmisc", "footnotebackref", "geometry", "gettitlestring", "hycolor", "ifoddpage", "infwarerr", "intcalc", "koma-script", "kvdefinekeys", "kvoptions", "kvsetkeys", "latex-graphics-dev", "letltxmacro", "ltxcmds", "ly1", "mdframed", "microtype", "mweights", "needspace", "pagecolor", "pdfescape", "refcount", "rerunfilecheck", "setspace", "sourcecodepro", "sourcesanspro", "titling", "uniquecounter", "upquote", "varwidth", "xurl", "zref")
+    $Packages = @("adjustbox", "auxhook", "bigintcalc", "bitset", "bookmark", "caption", "collectbox", "colortbl", "csquotes", "etexcmds", "fancyhdr", "float", "footmisc", "footnotebackref", "geometry", "gettitlestring", "hycolor", "ifoddpage", "infwarerr", "intcalc", "koma-script", "kvdefinekeys", "kvoptions", "kvsetkeys", "latex-graphics-dev", "letltxmacro", "ltxcmds", "ly1", "mdframed", "microtype", "mweights", "needspace", "pagecolor", "pdfescape", "refcount", "rerunfilecheck", "setspace", "sourcecodepro", "sourcesanspro", "titling", "uniquecounter", "upquote", "varwidth", "xurl", "zref", "beautybook", "babel-german")
     foreach ($Package in $Packages) {
         Start-Process -FilePath "$MiKTeXInstallDir\miktex\bin\x64\miktex.exe" -ArgumentList @("packages", "install", "$Package") -Wait -NoNewWindow
     }
@@ -141,9 +141,9 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
-Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
-Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
+# Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
+# Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
+# Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
 Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
 
 if ($KeepArtifacts -eq $false)
