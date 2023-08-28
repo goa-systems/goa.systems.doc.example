@@ -35,7 +35,7 @@ function Install-Python {
 
         [Parameter()]
         [string]
-        $Version = "3.10.6"
+        $Version = "3.11.5"
     )
 
     $PythonInstaller = "python-$Version-amd64.exe"
@@ -75,7 +75,7 @@ function Install-MiKTeX {
 
         [Parameter()]
         [string]
-        $Version = "22.7"
+        $Version = "23.4"
     )
 
     $MiKTeXInstaller = "basic-miktex-$Version-x64.exe"
@@ -105,12 +105,12 @@ function Install-Pandoc {
 
         [Parameter()]
         [string]
-        $Version = "2.19.2"
+        $Version = "3.1.6.2"
     )
     
     $PandocMsi = "pandoc-$Version-windows-x86_64.msi"
     Start-BitsTransfer -Source "https://github.com/jgm/pandoc/releases/download/$Version/$PandocMsi" -Destination "$DownloadDir\$PandocMsi"
-    Start-Process -FilePath "msiexec" -ArgumentList @("/i", "$DownloadDir\$PandocMsi", "/qn", "PPLICATIONFOLDER=`"$env:LocalAppData\Programs\Pandoc`"", "ADDLOCAL=MainProgram,Complete,Manual,Citation") -Wait
+    Start-Process -FilePath "msiexec" -ArgumentList @("/i", "$DownloadDir\$PandocMsi", "/qn", "APPLICATIONFOLDER=`"$env:LocalAppData\Programs\Pandoc`"", "ADDLOCAL=MainProgram,Complete,Manual,Citation") -Wait
 }
 
 <#
@@ -127,7 +127,7 @@ function Install-Template {
 
         [Parameter()]
         [string]
-        $Version = "2.0.0"
+        $Version = "2.4.0"
     )
     
     $EisvogelZip = "Eisvogel-$Version.zip"
@@ -141,10 +141,10 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
-Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
+# Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
+# Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
 Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
-Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
+# Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
 
 if ($KeepArtifacts -eq $false)
 {
