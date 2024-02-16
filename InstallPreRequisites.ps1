@@ -2,19 +2,19 @@
 param (
     [Parameter()]
     [string]
-    $PythonVersion = "3.11.5",
+    $PythonVersion = "3.12.2",
 
     [Parameter()]
     [string]
-    $MiktexVersion = "23.4",
+    $MiktexVersion = "24.1",
 
     [Parameter()]
     [string]
-    $PanDocVersion = "3.1.6.2",
+    $PanDocVersion = "3.1.12",
 
     [Parameter()]
     [string]
-    $EisVogelVersion = "2.4.0",
+    $EisVogelVersion = "2.4.2",
 
     [Parameter(Mandatory = $false)]
     [Switch]
@@ -35,7 +35,7 @@ function Install-Python {
 
         [Parameter()]
         [string]
-        $Version = "3.11.5"
+        $Version = "3.12.2"
     )
 
     $PythonInstaller = "python-$Version-amd64.exe"
@@ -75,7 +75,7 @@ function Install-MiKTeX {
 
         [Parameter()]
         [string]
-        $Version = "23.4"
+        $Version = "24.1"
     )
 
     $MiKTeXInstaller = "basic-miktex-$Version-x64.exe"
@@ -85,7 +85,7 @@ function Install-MiKTeX {
 
     Start-Process -FilePath "$DownloadDir\$MiKTeXInstaller" -ArgumentList @("--install", "--unattended", "--user-install=`"$MiKTeXInstallDir`"") -Wait
     Start-Process -FilePath "$MiKTeXInstallDir\miktex\bin\x64\miktex.exe" -ArgumentList @("packages", "update") -Wait -NoNewWindow
-    $Packages = @("adjustbox", "auxhook", "bigintcalc", "bitset", "bookmark", "caption", "collectbox", "colortbl", "csquotes", "etexcmds", "fancyhdr", "float", "footmisc", "footnotebackref", "geometry", "gettitlestring", "hycolor", "ifoddpage", "infwarerr", "intcalc", "koma-script", "kvdefinekeys", "kvoptions", "kvsetkeys", "latex-graphics-dev", "letltxmacro", "ltxcmds", "ly1", "mdframed", "microtype", "mweights", "needspace", "pagecolor", "pdfescape", "refcount", "rerunfilecheck", "setspace", "sourcecodepro", "sourcesanspro", "titling", "uniquecounter", "upquote", "varwidth", "xurl", "zref", "beautybook", "babel-german")
+    $Packages = @("adjustbox", "auxhook", "bigintcalc", "bitset", "bookmark", "caption", "collectbox", "colortbl", "csquotes", "etexcmds", "fancyhdr", "float", "footmisc", "footnotebackref", "geometry", "gettitlestring", "hycolor", "ifoddpage", "infwarerr", "intcalc", "koma-script", "kvdefinekeys", "kvoptions", "kvsetkeys", "latex-graphics-dev", "letltxmacro", "ltxcmds", "ly1", "mdframed", "microtype", "mweights", "needspace", "pagecolor", "pdfescape", "refcount", "rerunfilecheck", "setspace", "sourcecodepro", "sourcesanspro", "titling", "uniquecounter", "upquote", "varwidth", "xurl", "zref", "beautybook", "babel-german", "parskip", "booktabs", "footnotehyper")
     foreach ($Package in $Packages) {
         Start-Process -FilePath "$MiKTeXInstallDir\miktex\bin\x64\miktex.exe" -ArgumentList @("packages", "install", "$Package") -Wait -NoNewWindow
     }
@@ -105,7 +105,7 @@ function Install-Pandoc {
 
         [Parameter()]
         [string]
-        $Version = "3.1.6.2"
+        $Version = "3.1.12"
     )
     
     $PandocMsi = "pandoc-$Version-windows-x86_64.msi"
@@ -127,11 +127,11 @@ function Install-Template {
 
         [Parameter()]
         [string]
-        $Version = "2.4.0"
+        $Version = "2.4.2"
     )
     
     $EisvogelZip = "Eisvogel-$Version.zip"
-    Start-BitsTransfer -Source "https://github.com/Wandmalfarbe/pandoc-latex-template/releases/download/v$Version/$EisvogelZip" -Destination "$DownloadDir\$EisvogelZip"
+    Start-BitsTransfer -Source "https://github.com/Wandmalfarbe/pandoc-latex-template/releases/download/$Version/$EisvogelZip" -Destination "$DownloadDir\$EisvogelZip"
     Expand-Archive -Path "$DownloadDir\$EisvogelZip" -DestinationPath "$env:AppData\pandoc\templates\"
 
 }
@@ -141,10 +141,10 @@ $UUID = (New-Guid)
 $DownloadDir = "$env:TEMP\$UUID"
 New-Item -ItemType "Directory" -Path "$DownloadDir"
 
-# Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
-# Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
+Install-Python -DownloadDir "$DownloadDir" -Version "$PythonVersion"
+Install-MiKTeX -DownloadDir "$DownloadDir" -Version "$MiktexVersion"
 Install-Pandoc -DownloadDir "$DownloadDir" -Version "$PanDocVersion"
-# Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
+Install-Template -DownloadDir "$DownloadDir" -Version "$EisVogelVersion"
 
 if ($KeepArtifacts -eq $false)
 {
